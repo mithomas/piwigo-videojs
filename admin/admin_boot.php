@@ -30,7 +30,8 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 // Define all videos with supported extensions
 define('SQL_VIDEOS', "(LOWER(`file`) LIKE '%.ogg' OR LOWER(`file`) LIKE '%.ogv' OR
                 LOWER(`file`) LIKE '%.mp4' OR LOWER(`file`) LIKE '%.m4v' OR
-                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv')");
+                LOWER(`file`) LIKE '%.webm' OR LOWER(`file`) LIKE '%.webmv'OR
+		LOWER(`file`) LIKE '%.mov')");
 
 // Hook to add an admin config page
 add_event_handler('get_admin_plugin_menu_links', 'vjs_admin_menu');
@@ -92,6 +93,7 @@ function vjs_begin_delete_elements($ids)
         'ogv',
         'mp4',
         'm4v',
+	'mov',
         'webm',
         'webmv',
   );
