@@ -365,7 +365,7 @@ SELECT *
 			$rotate = pwg_image::get_rotation_angle_from_code($picture['current']['rotation']);
 			$zoomrotate = array(
 						'rotate' => $rotate,
-						'zoom'   => round($width / $height, 1, PHP_ROUND_HALF_DOWN)
+						'zoom'   => round(($width / $height), 1, PHP_ROUND_HALF_DOWN)
 					);
 			// Change the video player size
 			$tmp_width = $width;
@@ -428,7 +428,7 @@ SELECT *
 		array(
 			'VIDEOJS_POSTER_URL' => embellish_url(get_gallery_home_url().$poster),
 			'VIDEOJS_PATH'       => embellish_url(get_gallery_home_url().VIDEOJS_PATH),
-			'WIDTH'              => $width,
+			'WIDTH'              => $width*0.75, // have controls still visible
 			'RATIO'              => $ratio,
 			'OPTIONS'            => $options,
 			'VIDEOJS_SKIN'       => $skin,
