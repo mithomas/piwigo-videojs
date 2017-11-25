@@ -126,7 +126,9 @@ if (isset($exif))
 	$exif['filesize'] = (string)$general->FileSize_String;
 	$exif['duration'] = (string)$general->Duration_String;
 	$exif['bitrate'] = (string)$video->BitRate_String;
-	$exif['sampling_rate'] = (string)$audio->SamplingRate_String;
+	if(isset($exif['sampling_rate'])) { // handle fastmotion videos which got not sound
+	    $exif['sampling_rate'] = (string)$audio->SamplingRate_String;
+	}
 	isset($exif['rotation']) and $exif['rotation'] = pwg_image::get_rotation_angle_from_code($exif['rotation']) ."°";
 	ksort($exif);
 }
