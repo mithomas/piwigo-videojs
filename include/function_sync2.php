@@ -150,9 +150,14 @@ while ($row = pwg_db_fetch_assoc($result))
 		}
 		/* if video is shorter fallback to last second */
                 if (isset($exif['playtime_seconds']) and $sync_options['postersec'] > $exif['playtime_seconds'])
-                {
+		{
                     $warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
                     $sync_options['postersec'] = (int)$exif['playtime_seconds'];
+                }
+		else if (!isset($exif['playtime_seconds']))
+		{ /* if video is shorter than one second use the start */
+                    $warnings[] = "Movie ". $filename ." is shorter than 1 second fallback to start of video";
+                    $sync_options['postersec'] = "0";
                 }
 		/* default output to JPG */
                 $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
