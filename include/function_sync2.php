@@ -148,22 +148,24 @@ while ($row = pwg_db_fetch_assoc($result))
 				unlink($ifile);
 			}
 		}
+
+		$postersec = $sync_options['postersec']; // own variable to not mess with sync option for the yet unprocessed videos
 		/* if video is shorter fallback to last second */
-                if (isset($exif['playtime_seconds']) and $sync_options['postersec'] > $exif['playtime_seconds'])
+                if (isset($exif['playtime_seconds']) and $postersec > $exif['playtime_seconds'])
 		{
-                    $warnings[] = "Movie ". $filename ." is shorter than ". $sync_options['postersec'] ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
-                    $sync_options['postersec'] = (int)$exif['playtime_seconds'];
+                    $warnings[] = "Movie ". $filename ." is shorter than ". $postersec ." secondes, fallback to ". $exif['playtime_seconds'] ." secondes";
+                    $postersec = (int)$exif['playtime_seconds'];
                 }
 		else if (!isset($exif['playtime_seconds']))
 		{ /* if video is shorter than one second use the start */
                     $warnings[] = "Movie ". $filename ." is shorter than 1 second fallback to start of video";
-                    $sync_options['postersec'] = "0";
+                    $postersec = "0";
                 }
 		/* default output to JPG */
-                $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+                $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$postersec." -i \"".$in."\" -vcodec mjpeg -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 if ($sync_options['output'] == "png")
                 {
-                    $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$sync_options['postersec']." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
+                    $ffmpeg = $sync_options['ffmpeg'] ." -ss ".$postersec." -i \"".$in."\" -vcodec png -vframes 1 -an -f rawvideo -y \"".$out. "\"";
                 }
                 //echo $ffmpeg;
                 $log = system($ffmpeg, $retval);
